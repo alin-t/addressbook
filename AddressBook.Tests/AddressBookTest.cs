@@ -12,14 +12,14 @@ namespace AddressBook.Tests
     {
         private static IDataAccessor _accessor;
         private static AddressBookController _controller;
-        private static Entities.AddressBook _testAddressBook;
+        private static Entities.AddressBook _testAddressItem;
 
         [ClassInitialize]
         public static void ClassLevelInitialization(TestContext context)
         {
             _accessor = new MemoryAccessor();
             _controller = new AddressBookController(_accessor);
-            _testAddressBook = new Entities.AddressBook() { Name = "testName", Email = "testEmail", Phone = "testPhone" };
+            _testAddressItem = new Entities.AddressBook() { Name = "testName", Email = "testEmail", Phone = "testPhone" };
         }
 
         [TestInitialize]
@@ -38,42 +38,42 @@ namespace AddressBook.Tests
         [TestMethod]
         public void TestNewItemIsSavedCorrectlyByAddAction()
         {
-            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
-            Entities.AddressBook addressBook = _accessor.GetByName(_testAddressBook.Name);
+            _controller.Add(_testAddressItem.Name, _testAddressItem.Email, _testAddressItem.Phone);
+            Entities.AddressBook addressBook = _accessor.GetByName(_testAddressItem.Name);
             Assert.IsNotNull(addressBook);
-            CompareAddressItems(_testAddressBook, addressBook);
+            CompareAddressItems(_testAddressItem, addressBook);
         }
 
         [TestMethod]
         public void TestItemIsRetrievedCorrectlyByGetByNameActionWhenExists()
         {
-            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
-            Entities.AddressBook addressBook = _controller.GetByName(_testAddressBook.Name);
+            _controller.Add(_testAddressItem.Name, _testAddressItem.Email, _testAddressItem.Phone);
+            Entities.AddressBook addressBook = _controller.GetByName(_testAddressItem.Name);
 
             Assert.IsNotNull(addressBook);
-            CompareAddressItems(_testAddressBook, addressBook);
+            CompareAddressItems(_testAddressItem, addressBook);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ItemAlreadyExistsException))]
         public void TestAddingTheSameItemTwiceThrowsException()
         {
-            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
-            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
+            _controller.Add(_testAddressItem.Name, _testAddressItem.Email, _testAddressItem.Phone);
+            _controller.Add(_testAddressItem.Name, _testAddressItem.Email, _testAddressItem.Phone);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ItemNotFoundException))]
         public void TestLookingForInexistingItemThrowsException()
         {
-            _controller.GetByName(_testAddressBook.Name);
+            _controller.GetByName(_testAddressItem.Name);
         }
 
         [TestMethod]
         public void TestDeleteActionRemovesItemFromStorage()
         {
-            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
-            _controller.Delete(_testAddressBook.Name);
+            _controller.Add(_testAddressItem.Name, _testAddressItem.Email, _testAddressItem.Phone);
+            _controller.Delete(_testAddressItem.Name);
             Assert.AreEqual(0, _accessor.GetAll().Count);
         }
 
@@ -81,7 +81,16 @@ namespace AddressBook.Tests
         [ExpectedException(typeof(ItemNotFoundException))]
         public void TestDeletingNonExistingItemThrowsException()
         {
-            _controller.Delete(_testAddressBook.Name);
+            _controller.Delete(_testAddressItem.Name);
+        }
+
+        [TestMethod]
+        public void TestAddingItemUsingDefaultControllersConstructorWorks()
+        {
+            var defaultController = new AddressBookController();
+            defaultController.Add(_testAddressItem.Name, _testAddressItem.Email, _testAddressItem.Phone);
+            var actualAddressItem = defaultController.GetByName(_testAddressItem.Name);
+            CompareAddressItems(_testAddressItem, actualAddressItem);
         }
 
         private void CompareAddressItems(Entities.AddressBook expected, Entities.AddressBook actual)
