@@ -15,9 +15,27 @@ namespace AddressBook.Service
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional, controller = "AddressBook" }
+                name: "AddItem",
+                routeTemplate: "add/{name}/{email}/{phone}",
+                defaults: new { controller = "AddressBook", action = "add" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "DeleteItem",
+                routeTemplate: "{action}/{name}",
+                defaults: new { controller = "AddressBook", action = "delete" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "GetByName",
+                routeTemplate: "{action}/{name}",
+                defaults: new { controller = "AddressBook", action= "getbyname" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "GetAll",
+                routeTemplate: "",
+                defaults: new { controller = "AddressBook", action = "get" }
             );
         }
     }

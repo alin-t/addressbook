@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 using AddressBook.Dal;
 
-namespace AddressBook.Controllers
+namespace AddressBook.Service.Controllers
 {
     public class AddressBookController : ApiController
     {
@@ -22,30 +18,32 @@ namespace AddressBook.Controllers
         }
 
         // GET /
+        [HttpGet]
         public IEnumerable<Entities.AddressBook> Get()
         {
             return _dataAccessor.GetAll();
         }
 
-        // GET /name
-        public Entities.AddressBook Get(string name)
+        // GET /getbyname/name
+        [HttpGet]
+        public Entities.AddressBook GetByName(string name)
         {
             return _dataAccessor.GetByName(name);
         }
 
-        // POST api/values
-        public void Post([FromBody]string value)
+        // GET /add/name/email/phone
+        [HttpGet]
+        public void Add(string name, string email, string phone)
         {
+            _dataAccessor.AddItem(new Entities.AddressBook() {Name = name, Email = email, Phone = phone});
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        // GET /delete/name
+        [HttpGet]
+        [ActionName("delete")]
+        public void Delete(string name)
         {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+            _dataAccessor.DeleteByName(name);
         }
     }
 }

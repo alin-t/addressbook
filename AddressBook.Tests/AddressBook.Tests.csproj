@@ -56,6 +56,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AddressBook.Core\AddressBook.Core.csproj">
+      <Project>{1e963242-1436-400d-ab52-0c68cd686652}</Project>
+      <Name>AddressBook.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AddressBook.Dal\AddressBook.Dal.csproj">
       <Project>{A61D44FA-14CB-45A6-AD14-B15163AE31E8}</Project>
       <Name>AddressBook.Dal</Name>

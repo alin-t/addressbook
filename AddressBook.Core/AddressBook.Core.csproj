@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A61D44FA-14CB-45A6-AD14-B15163AE31E8}</ProjectGuid>
+    <ProjectGuid>{1E963242-1436-400D-AB52-0C68CD686652}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AddressBook.Dal</RootNamespace>
-    <AssemblyName>AddressBook.Dal</AssemblyName>
+    <RootNamespace>AddressBook.Core</RootNamespace>
+    <AssemblyName>AddressBook.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,19 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDataAccessor.cs" />
-    <Compile Include="MemoryAccessor.cs" />
+    <Compile Include="ItemAlreadyExistsException.cs" />
+    <Compile Include="ItemNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AddressBook.Core\AddressBook.Core.csproj">
-      <Project>{1e963242-1436-400d-ab52-0c68cd686652}</Project>
-      <Name>AddressBook.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AddressBook.Entities\AddressBook.Entities.csproj">
-      <Project>{e250c1d9-3d18-42c4-944d-ad4020533bd1}</Project>
-      <Name>AddressBook.Entities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
