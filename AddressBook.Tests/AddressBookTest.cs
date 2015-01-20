@@ -10,78 +10,78 @@ namespace AddressBook.Tests
     [TestClass]
     public class AddressBookTest
     {
-        private static IDataAccessor accessor;
-        private static AddressBookController controller;
-        private static Entities.AddressBook testAddressBook;
+        private static IDataAccessor _accessor;
+        private static AddressBookController _controller;
+        private static Entities.AddressBook _testAddressBook;
 
         [ClassInitialize]
         public static void ClassLevelInitialization(TestContext context)
         {
-            accessor = new MemoryAccessor();
-            controller = new AddressBookController(accessor);
-            testAddressBook = new Entities.AddressBook() { Name = "testName", Email = "testEmail", Phone = "testPhone" };
+            _accessor = new MemoryAccessor();
+            _controller = new AddressBookController(_accessor);
+            _testAddressBook = new Entities.AddressBook() { Name = "testName", Email = "testEmail", Phone = "testPhone" };
         }
 
         [TestInitialize]
         public void TestLevelInitialization()
         {
-            accessor.Clear();
+            _accessor.Clear();
         }
 
         [TestMethod]
         public void TestInitialLoadReturnsEmptyList()
         {
-            List<Entities.AddressBook> addressBooks = controller.Get().ToList();
+            List<Entities.AddressBook> addressBooks = _controller.Get().ToList();
             Assert.AreEqual(0, addressBooks.Count, "Initial load does not return empty list");
         }
 
         [TestMethod]
         public void TestNewItemIsSavedCorrectlyByAddAction()
         {
-            controller.Add(testAddressBook.Name, testAddressBook.Email, testAddressBook.Phone);
-            Entities.AddressBook addressBook = accessor.GetByName(testAddressBook.Name);
+            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
+            Entities.AddressBook addressBook = _accessor.GetByName(_testAddressBook.Name);
             Assert.IsNotNull(addressBook);
-            CompareAddressItems(testAddressBook, addressBook);
+            CompareAddressItems(_testAddressBook, addressBook);
         }
 
         [TestMethod]
         public void TestItemIsRetrievedCorrectlyByGetByNameActionWhenExists()
         {
-            controller.Add(testAddressBook.Name, testAddressBook.Email, testAddressBook.Phone);
-            Entities.AddressBook addressBook = controller.GetByName(testAddressBook.Name);
+            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
+            Entities.AddressBook addressBook = _controller.GetByName(_testAddressBook.Name);
 
             Assert.IsNotNull(addressBook);
-            CompareAddressItems(testAddressBook, addressBook);
+            CompareAddressItems(_testAddressBook, addressBook);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ItemAlreadyExistsException))]
         public void TestAddingTheSameItemTwiceThrowsException()
         {
-            controller.Add(testAddressBook.Name, testAddressBook.Email, testAddressBook.Phone);
-            controller.Add(testAddressBook.Name, testAddressBook.Email, testAddressBook.Phone);
+            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
+            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ItemNotFoundException))]
         public void TestLookingForInexistingItemThrowsException()
         {
-            controller.GetByName(testAddressBook.Name);
+            _controller.GetByName(_testAddressBook.Name);
         }
 
         [TestMethod]
         public void TestDeleteActionRemovesItemFromStorage()
         {
-            controller.Add(testAddressBook.Name, testAddressBook.Email, testAddressBook.Phone);
-            controller.Delete(testAddressBook.Name);
-            Assert.AreEqual(0, accessor.GetAll().Count);
+            _controller.Add(_testAddressBook.Name, _testAddressBook.Email, _testAddressBook.Phone);
+            _controller.Delete(_testAddressBook.Name);
+            Assert.AreEqual(0, _accessor.GetAll().Count);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ItemNotFoundException))]
         public void TestDeletingNonExistingItemThrowsException()
         {
-            controller.Delete(testAddressBook.Name);
+            _controller.Delete(_testAddressBook.Name);
         }
 
         private void CompareAddressItems(Entities.AddressBook expected, Entities.AddressBook actual)
