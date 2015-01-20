@@ -21,16 +21,16 @@ namespace AddressBook.Controllers
             _dataAccessor = accessor;
         }
 
-        // GET api/values
-        public IEnumerable<string> Get()
+        // GET /
+        public IEnumerable<Entities.AddressBook> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _dataAccessor.GetAll();
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        // GET /name
+        public Entities.AddressBook Get(string name)
         {
-            return "value";
+            return _dataAccessor.GetByName(name);
         }
 
         // POST api/values

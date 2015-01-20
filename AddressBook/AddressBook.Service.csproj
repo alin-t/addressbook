@@ -101,6 +101,10 @@
       <Project>{A61D44FA-14CB-45A6-AD14-B15163AE31E8}</Project>
       <Name>AddressBook.Dal</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AddressBook.Entities\AddressBook.Entities.csproj">
+      <Project>{e250c1d9-3d18-42c4-944d-ad4020533bd1}</Project>
+      <Name>AddressBook.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
