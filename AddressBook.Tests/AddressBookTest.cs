@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AddressBook.Core;
 using AddressBook.Dal;
@@ -16,7 +15,7 @@ namespace AddressBook.Tests
         private static Entities.AddressBook testAddressBook;
 
         [ClassInitialize]
-        public static void MyTestInitialize(TestContext context)
+        public static void ClassLevelInitialization(TestContext context)
         {
             accessor = new MemoryAccessor();
             controller = new AddressBookController(accessor);
@@ -24,7 +23,7 @@ namespace AddressBook.Tests
         }
 
         [TestInitialize]
-        public void MyInit()
+        public void TestLevelInitialization()
         {
             accessor.Clear();
         }
@@ -68,6 +67,21 @@ namespace AddressBook.Tests
         public void TestLookingForInexistingItemThrowsException()
         {
             controller.GetByName(testAddressBook.Name);
+        }
+
+        [TestMethod]
+        public void TestDeleteActionRemovesItemFromStorage()
+        {
+            controller.Add(testAddressBook.Name, testAddressBook.Email, testAddressBook.Phone);
+            controller.Delete(testAddressBook.Name);
+            Assert.AreEqual(0, accessor.GetAll().Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ItemNotFoundException))]
+        public void TestDeletingNonExistingItemThrowsException()
+        {
+            controller.Delete(testAddressBook.Name);
         }
 
         private void CompareAddressItems(Entities.AddressBook expected, Entities.AddressBook actual)
