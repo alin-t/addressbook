@@ -4,8 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
+using AddressBook.Service;
 
-namespace AddressBook
+namespace AddressBook.Service
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
